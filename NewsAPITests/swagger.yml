@@ -1,0 +1,220 @@
+# PASTE THIS INTO: https://editor.swagger.io
+# IN ORDER TO HAVE A SWAGGER PAGE FOR THE REQUESTS
+# I ALSO RECOMMEND USING POSTMAN IN DEVELOPMENT
+
+openapi: 3.0.1
+info:
+  title: api
+  version: '1.0'
+servers:
+  - url: http://localhost:5000
+paths:
+  /api/feed:
+    get:
+      tags:
+        - Article
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+  /api/articles:
+    get:
+      tags:
+        - Article
+      parameters:
+        - name: SearchTerm
+          in: query
+          style: form
+          schema:
+            minLength: 3
+            type: string
+        - name: PageSize
+          in: query
+          style: form
+          schema:
+            maximum: 2147483647
+            minimum: 1
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+    post:
+      tags:
+        - Article
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateArticleRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateArticleRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateArticleRequestDto'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+  /api/articles/{articleId}:
+    get:
+      tags:
+        - Article
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+    put:
+      tags:
+        - Article
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArticleRequestDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArticleRequestDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UpdateArticleRequestDto'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+    delete:
+      tags:
+        - Article
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDto'
+components:
+  schemas:
+    CreateArticleRequestDto:
+      type: object
+      properties:
+        headline:
+          maxLength: 30
+          minLength: 5
+          type: string
+          nullable: true
+        author:
+          type: string
+          nullable: true
+        articleImgUrl:
+          type: string
+          nullable: true
+        body:
+          maxLength: 1000
+          type: string
+          nullable: true
+      additionalProperties: false
+    ResponseDto:
+      type: object
+      properties:
+        messageToClient:
+          type: string
+          nullable: true
+        responseData:
+          nullable: true
+      additionalProperties: false
+    UpdateArticleRequestDto:
+      type: object
+      properties:
+        headline:
+          maxLength: 30
+          minLength: 5
+          type: string
+          nullable: true
+        author:
+          type: string
+          nullable: true
+        articleImgUrl:
+          type: string
+          nullable: true
+        body:
+          maxLength: 1000
+          type: string
+          nullable: true
+      additionalProperties: false
