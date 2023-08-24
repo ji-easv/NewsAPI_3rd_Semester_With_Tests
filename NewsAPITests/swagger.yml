@@ -19,13 +19,19 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsFeedItem'
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsFeedItem'
             text/json:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsFeedItem'
   /api/articles:
     get:
       tags:
@@ -51,13 +57,19 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchArticleItem'
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchArticleItem'
             text/json:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchArticleItem'
     post:
       tags:
         - Article
@@ -78,13 +90,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                $ref: '#/components/schemas/Article'
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                $ref: '#/components/schemas/Article'
             text/json:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                $ref: '#/components/schemas/Article'
   /api/articles/{articleId}:
     get:
       tags:
@@ -103,13 +115,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                $ref: '#/components/schemas/Article'
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                $ref: '#/components/schemas/Article'
             text/json:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                $ref: '#/components/schemas/Article'
     put:
       tags:
         - Article
@@ -138,13 +150,13 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                $ref: '#/components/schemas/Article'
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                $ref: '#/components/schemas/Article'
             text/json:
               schema:
-                $ref: '#/components/schemas/ResponseDto'
+                $ref: '#/components/schemas/Article'
     delete:
       tags:
         - Article
@@ -159,18 +171,27 @@ paths:
       responses:
         '200':
           description: Success
-          content:
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/ResponseDto'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseDto'
-            text/json:
-              schema:
-                $ref: '#/components/schemas/ResponseDto'
 components:
   schemas:
+    Article:
+      type: object
+      properties:
+        headline:
+          type: string
+          nullable: true
+        body:
+          type: string
+          nullable: true
+        articleId:
+          type: integer
+          format: int32
+        articleImgUrl:
+          type: string
+          nullable: true
+        author:
+          type: string
+          nullable: true
+      additionalProperties: false
     CreateArticleRequestDto:
       type: object
       properties:
@@ -190,13 +211,33 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    ResponseDto:
+    NewsFeedItem:
       type: object
       properties:
-        messageToClient:
+        headline:
           type: string
           nullable: true
-        responseData:
+        articleId:
+          type: integer
+          format: int32
+        articleImgUrl:
+          type: string
+          nullable: true
+        body:
+          type: string
+          nullable: true
+      additionalProperties: false
+    SearchArticleItem:
+      type: object
+      properties:
+        headline:
+          type: string
+          nullable: true
+        articleId:
+          type: integer
+          format: int32
+        author:
+          type: string
           nullable: true
       additionalProperties: false
     UpdateArticleRequestDto:
