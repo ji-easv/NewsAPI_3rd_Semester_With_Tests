@@ -38,10 +38,11 @@ public class UpdateArticle
             conn.Execute(sql, article);
         }
 
+        var url = "http://localhost:5000/api/articles/" + 1;
         HttpResponseMessage response;
         try
         {
-            response = await _httpClient.PutAsJsonAsync("http://localhost:5000/api/articles/" + 1, article);
+            response = await _httpClient.PutAsJsonAsync(url, article);
             TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)
@@ -63,6 +64,7 @@ public class UpdateArticle
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeTrue();
+            (await Helper.IsCorsFullyEnabledAsync(url)).Should().BeTrue();
             responseObject.Should().BeEquivalentTo(article, Helper.MyBecause(responseObject, article));
         }
     }
@@ -82,10 +84,11 @@ public class UpdateArticle
             ArticleId = 1,
             ArticleImgUrl = articleImgUrl
         };
+        var url = "http://localhost:5000/api/articles/" + 1;
         HttpResponseMessage response;
         try
         {
-            response = await _httpClient.PutAsJsonAsync("http://localhost:5000/api/articles/" + 1, article);
+            response = await _httpClient.PutAsJsonAsync(url, article);
             TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)

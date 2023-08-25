@@ -1,6 +1,7 @@
 using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
+using NUnit.Framework;
 
 namespace Tests;
 
@@ -56,8 +57,50 @@ Best regards, Alex
         }
     }
 
-    public static string BadResponseBody(string content) {
-      return  $@"
+    public static async Task<bool> IsCorsFullyEnabledAsync(string path)
+    {
+        using var client = new HttpClient();
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Options, new Uri(path));
+            // Add Origin header to simulate CORS request
+            request.Headers.Add("Origin", "https://week35-86108.web.app");
+            request.Headers.Add("Access-Control-Request-Method", "GET");
+            request.Headers.Add("Access-Control-Request-Headers", "X-Requested-With");
+
+            var response = await client.SendAsync(request);
+
+            bool corsEnabled = false;
+
+            if (response.Headers.Contains("Access-Control-Allow-Origin"))
+            {
+                var accessControlAllowOrigin =
+                    response.Headers.GetValues("Access-Control-Allow-Origin").FirstOrDefault();
+                corsEnabled = accessControlAllowOrigin == "*" ||
+                              accessControlAllowOrigin == "https://week35-86108.web.app";
+            }
+
+            var accessControlAllowMethods = response.Headers.GetValues("Access-Control-Allow-Methods").FirstOrDefault();
+            var accessControlAllowHeaders = response.Headers.GetValues("Access-Control-Allow-Headers").FirstOrDefault();
+
+            if (corsEnabled && (accessControlAllowMethods != null && accessControlAllowMethods.Contains("GET")) &&
+                (accessControlAllowHeaders != null && accessControlAllowHeaders.Contains("X-Requested-With")))
+            {
+                return true;
+            }
+        }
+        catch (Exception)
+        {
+            throw new Exception("\nCORS IS NOT ENABLED. PLEASE ENABLE CORS.\n(check last part of the project description)\n");
+        }
+
+
+        return false;
+    }
+
+    public static string BadResponseBody(string content)
+    {
+        return $@"
 🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨
 Hey buddy, I've tried to take the response body from the API and turn into a class object,
 but that failed. Below is what you sent me + the inner exception.
@@ -90,7 +133,6 @@ Best regards, Alex.
 (Below is the inner exception)
 🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨🧨", e);
             }
-
         }
     }
 

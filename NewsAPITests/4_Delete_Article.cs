@@ -36,11 +36,11 @@ public class DeleteArticle
             conn.Execute(sql, article);
         }
 
-
+        var url = "http://localhost:5000/api/articles/1";
         HttpResponseMessage response;
         try
         {
-            response = await _httpClient.DeleteAsync("http://localhost:5000/api/articles/1");
+            response = await _httpClient.DeleteAsync(url);
             TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
 
         }
@@ -57,7 +57,7 @@ public class DeleteArticle
                     .Should()
                     .BeTrue();
             }
-
+            (await Helper.IsCorsFullyEnabledAsync(url)).Should().BeTrue();
             response.IsSuccessStatusCode.Should().BeTrue();
         }
     }

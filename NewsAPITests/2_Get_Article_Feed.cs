@@ -41,10 +41,11 @@ public class GetArticleFeed
             }
         }
 
+        var url = "http://localhost:5000/api/feed";
         HttpResponseMessage response;
         try
         {
-            response = await _httpClient.GetAsync("http://localhost:5000/api/feed");
+            response = await _httpClient.GetAsync(url);
             TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
 
         }
@@ -73,6 +74,8 @@ public class GetArticleFeed
                 article.Body.Length.Should().BeLessThan(51);
                 response.IsSuccessStatusCode.Should().BeTrue();
                 article.ArticleId.Should().BeGreaterThan(0);
+                (await Helper.IsCorsFullyEnabledAsync(url)).Should().BeTrue();
+
             }
         }
     }

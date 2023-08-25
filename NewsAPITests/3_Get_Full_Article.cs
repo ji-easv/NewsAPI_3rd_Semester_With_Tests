@@ -37,11 +37,11 @@ public class GetFullArticle
             conn.Execute(sql, article);
         }
 
-
+        var url = "http://localhost:5000/api/articles/1";
         HttpResponseMessage response;
         try
         {
-            response = await _httpClient.GetAsync("http://localhost:5000/api/articles/1");
+            response = await _httpClient.GetAsync(url);
             TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
 
         }
@@ -68,6 +68,8 @@ public class GetFullArticle
             response.IsSuccessStatusCode.Should().BeTrue();
             actual.Author.Should().BeEquivalentTo(article.Author);
             actual.ArticleId.Should().Be(1);
+            (await Helper.IsCorsFullyEnabledAsync(url)).Should().BeTrue();
+
         }
     }
 }

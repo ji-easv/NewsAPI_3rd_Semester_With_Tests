@@ -44,11 +44,11 @@ public class SearchArticles
             }
         }
 
+        var url = $"http://localhost:5000/api/articles?searchTerm={searchterm}&pagesize={pageSize}";
         HttpResponseMessage response;
         try
         {
-            response = await _httpClient.GetAsync(
-                $"http://localhost:5000/api/articles?searchTerm={searchterm}&pagesize={pageSize}");
+            response = await _httpClient.GetAsync(url);
             TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)
@@ -72,9 +72,8 @@ public class SearchArticles
         {
             articles.Count().Should().Be(resultSize);
             response.IsSuccessStatusCode.Should().BeTrue();
+            (await Helper.IsCorsFullyEnabledAsync(url)).Should().BeTrue();
         }
-
-
     }
 
     [TestCase("qq", 5)]
@@ -92,7 +91,7 @@ public class SearchArticles
         {
             throw new Exception(Helper.NoResponseMessage, e);
         }
-        
+
         using (new AssertionScope())
         {
             response.IsSuccessStatusCode.Should().BeFalse();

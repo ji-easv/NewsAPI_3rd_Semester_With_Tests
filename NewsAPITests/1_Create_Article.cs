@@ -29,11 +29,12 @@ public class CreateArticle
             ArticleId = 1,
             ArticleImgUrl = "https://someimg/img.jpg"
         };
-
+        var url = "http://localhost:5000/api/articles";
+        
         HttpResponseMessage response;
         try
         {
-            response = await _httpClient.PostAsJsonAsync("http://localhost:5000/api/articles", article);
+            response = await _httpClient.PostAsJsonAsync(url, article);
             TestContext.WriteLine("THE FULL BODY RESPONSE: " + await response.Content.ReadAsStringAsync());
         }
         catch (Exception e)
@@ -54,6 +55,7 @@ public class CreateArticle
 
         using (new AssertionScope())
         {
+            (await Helper.IsCorsFullyEnabledAsync(url)).Should().BeTrue();
             response.IsSuccessStatusCode.Should().BeTrue();
             responseObject.Should().BeEquivalentTo(article, Helper.MyBecause(responseObject, article));
         }
@@ -84,7 +86,7 @@ public class CreateArticle
         {
             throw new Exception(Helper.NoResponseMessage, e);
         }
-
+        
         response.IsSuccessStatusCode.Should().BeFalse();
     }
 }
