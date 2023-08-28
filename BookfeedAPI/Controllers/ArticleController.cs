@@ -54,13 +54,13 @@ public class ArticleController : ControllerBase
         }
     }
     
-    [HttpPut("{id}")]
+    [HttpPut("articles/{id}")]
     public Article Update(int id, [FromBody] UpdateArticleRequestDto articleDto)
     {
         return _articleService.Update(id, articleDto);
     }
     
-    [HttpDelete("{id}")]
+    [HttpDelete("articles/{id}")]
     public void Delete(int id)
     {
         _articleService.Delete(id);
