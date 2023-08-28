@@ -1,11 +1,12 @@
-using Core.Model;
 using Infrastructure;
+using Infrastructure.Models;
 
 namespace Core.Services;
 
 public class ArticleService
 {
     private readonly ArticleRepository _articleRepository;
+    private readonly List<string> _validAuthors = new() {"Rob", "Bob", "Dob", "Lob"};
 
     public ArticleService(ArticleRepository articleRepository)
     {
@@ -19,21 +20,34 @@ public class ArticleService
     
     public Article Get(int id)
     {
-        throw new NotImplementedException();
+        return _articleRepository.Get(id);
     }
     
-    public Article Create(Article article)
+    public Article Create(CreateArticleRequestDto articleDto)
     {
-        throw new NotImplementedException();
+
+        if (_validAuthors.Contains(articleDto.Author))
+        {
+            try
+            {
+                return _articleRepository.Create(articleDto);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                throw new Exception("Could not create article");
+            }
+        }
+        throw new ArgumentException("Author is not valid");
     }
     
-    public Article Update(int id, Article article)
+    public Article Update(int id, UpdateArticleRequestDto articleDto)
     {
-        throw new NotImplementedException();
+        return _articleRepository.Update(id, articleDto);
     }
     
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        _articleRepository.Delete(id);
     }
 }

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Model;
+namespace Infrastructure.Models;
 
 public class UpdateArticleRequestDto
 {

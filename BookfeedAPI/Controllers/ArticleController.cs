@@ -1,11 +1,11 @@
-using Core.Model;
 using Core.Services;
+using Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookfeedAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api")]
 public class ArticleController : ControllerBase
 {
     private readonly ArticleService _articleService;
@@ -15,28 +15,43 @@ public class ArticleController : ControllerBase
         _articleService = articleService;
     }
 
-    [HttpGet]
+    [HttpGet("articles")]
     public List<Article> Get()
     {
         return _articleService.Get();
     }
     
-    [HttpGet("{id}")]
+    [HttpGet("articles/{id}")]
     public Article Get(int id)
     {
         return _articleService.Get(id);
     }
     
-    [HttpPost]
-    public Article Create(Article article)
+    [HttpPost("articles")]
+    public Article Create([FromBody]CreateArticleRequestDto articleDto)
     {
-        return _articleService.Create(article);
+        try
+        {
+            return _articleService.Create(articleDto);
+        }
+        catch (ArgumentException exception)
+        {
+            HttpContext.Response.StatusCode = 400;
+            HttpContext.Response.WriteAsJsonAsync(exception.Message);
+            return null;
+        }
+        catch (Exception exception)
+        {
+            HttpContext.Response.StatusCode = 500;
+            HttpContext.Response.WriteAsJsonAsync(exception.Message);
+            return null;
+        }
     }
     
     [HttpPut("{id}")]
-    public Article Update(int id, Article article)
+    public Article Update(int id, [FromBody] UpdateArticleRequestDto articleDto)
     {
-        return _articleService.Update(id, article);
+        return _articleService.Update(id, articleDto);
     }
     
     [HttpDelete("{id}")]

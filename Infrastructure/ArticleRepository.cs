@@ -1,4 +1,5 @@
-using Core.Model;
+using Dapper;
+using Infrastructure.Models;
 using Npgsql;
 
 namespace Infrastructure;
@@ -14,26 +15,42 @@ public class ArticleRepository
 
     public List<Article> Get()
     {
-        throw new NotImplementedException();
+        var sql = @"SELECT * FROM news.articles";
+        using var connection = _dataSource.OpenConnection();
+        return connection.Query<Article>(sql).ToList();
     }
     
     public Article Get(int id)
     {
-        throw new NotImplementedException();
+        var sql = @"SELECT * FROM news.articles WHERE articleid = @articleId";
+        using var connection = _dataSource.OpenConnection();
+        return connection.QueryFirst<Article>(sql, new {articleId = id});
     }
     
-    public Article Create(Article article)
+    public Article Create(CreateArticleRequestDto articleDto)
     {
-        throw new NotImplementedException();
+        var sql = @"INSERT INTO news.articles (headline, author, body, articleimgurl) 
+                        VALUES (@headline, @author, @body, 
+                                @articleimgurl) RETURNING *";
+        using var connection = _dataSource.OpenConnection();
+        return connection.QueryFirst<Article>(sql, new {headline = articleDto.Headline, 
+            author = articleDto.Author, body = articleDto.Body, articleimgurl = articleDto.ArticleImgUrl});
     }
     
-    public Article Update(int id, Article article)
+    public Article Update(int id, UpdateArticleRequestDto article)
     {
-        throw new NotImplementedException();
+        var sql = @"UPDATE news.articles SET headline = @headline, author = @author,
+                        body = @body, articleimgurl = @articleimgurl WHERE articleid = @articleId
+                        RETURNING *";
+        using var connection = _dataSource.OpenConnection();
+        return connection.QueryFirst<Article>(sql, new {headline = article.Headline, 
+            author = article.Author, body = article.Body, articleimgurl = article.ArticleImageUrl, articleId = id});
     }
     
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        var sql = "DELETE FROM news.articles WHERE articleid = @articleId";
+        using var connection = _dataSource.OpenConnection();
+        connection.Execute(sql, new {articleId = id});
     }
 }
