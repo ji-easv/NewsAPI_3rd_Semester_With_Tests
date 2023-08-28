@@ -51,7 +51,7 @@ public class ArticleRepository
                         RETURNING *";
         using var connection = _dataSource.OpenConnection();
         return connection.QueryFirst<Article>(sql, new {headline = article.Headline, 
-            author = article.Author, body = article.Body, articleimgurl = article.ArticleImageUrl, articleId = id});
+            author = article.Author, body = article.Body, articleimgurl = article.ArticleImgUrl, articleId = id});
     }
     
     public void Delete(int id)
