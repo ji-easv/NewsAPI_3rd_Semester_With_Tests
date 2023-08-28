@@ -14,12 +14,6 @@ public class ArticleController : ControllerBase
     {
         _articleService = articleService;
     }
-
-    [HttpGet("articles")]
-    public IEnumerable<Article> Get()
-    {
-        return _articleService.Get();
-    }
     
     [HttpGet("articles/{id}")]
     public Article Get(int id)
@@ -31,6 +25,13 @@ public class ArticleController : ControllerBase
     public IEnumerable<NewsFeedItem> GetFeed()
     {
         return _articleService.GetFeed();
+    }
+    
+    [HttpGet("articles")]
+    public IEnumerable<SearchArticleItem> Search([FromQuery(Name = "searchTerm")] string query,
+        [FromQuery(Name = "pageSize")] int pageSize)
+    {
+        return _articleService.Search(query, 1, pageSize);
     }
     
     [HttpPost("articles")]

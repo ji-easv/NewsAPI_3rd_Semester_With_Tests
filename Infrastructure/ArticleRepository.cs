@@ -12,13 +12,6 @@ public class ArticleRepository
     {
         _dataSource = dataSource;
     }
-
-    public IEnumerable<Article> Get()
-    {
-        var sql = @"SELECT * FROM news.articles";
-        using var connection = _dataSource.OpenConnection();
-        return connection.Query<Article>(sql).ToList();
-    }
     
     public Article Get(int id)
     {
@@ -32,6 +25,14 @@ public class ArticleRepository
         var sql = @"SELECT articleid, headline, LEFT(body, 50) AS body, articleimgurl FROM news.articles";
         using var connection = _dataSource.OpenConnection();
         return connection.Query<NewsFeedItem>(sql);
+    }
+    
+    public IEnumerable<SearchArticleItem> Search(string query, int page, int pageSize)
+    {
+        var sql = @"SELECT * FROM news.articles WHERE headline ILIKE @query OR body ILIKE @query 
+                    LIMIT @pageSize OFFSET @page * @pageSize";
+        using var connection = _dataSource.OpenConnection();
+        return connection.Query<SearchArticleItem>(sql, new {query = $"%{query}%", page = page-1, pageSize});
     }
     
     public Article Create(CreateArticleRequestDto articleDto)

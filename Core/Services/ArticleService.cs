@@ -13,11 +13,6 @@ public class ArticleService
         _articleRepository = articleRepository;
     }
     
-    public IEnumerable<Article> Get()
-    {
-        return _articleRepository.Get();
-    }
-    
     public Article Get(int id)
     {
         return _articleRepository.Get(id);
@@ -27,6 +22,21 @@ public class ArticleService
     public IEnumerable<NewsFeedItem> GetFeed()
     {
         return _articleRepository.GetFeed();
+    }
+    
+    public IEnumerable<SearchArticleItem> Search(string query, int page, int pageSize)
+    {
+        if (pageSize < 1)
+        {
+            throw new ArgumentException("Page size must be greater than 0");
+        }
+
+        if (query.Length < 3)
+        {
+            throw new ArgumentException("Search term must be at least 3 characters long");
+        }
+        
+        return _articleRepository.Search(query, page, pageSize);
     }
     
     public Article Create(CreateArticleRequestDto articleDto)
