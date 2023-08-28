@@ -13,7 +13,7 @@ public class ArticleService
         _articleRepository = articleRepository;
     }
     
-    public List<Article> Get()
+    public IEnumerable<Article> Get()
     {
         return _articleRepository.Get();
     }
@@ -23,22 +23,25 @@ public class ArticleService
         return _articleRepository.Get(id);
     }
     
+    
+    public IEnumerable<NewsFeedItem> GetFeed()
+    {
+        return _articleRepository.GetFeed();
+    }
+    
     public Article Create(CreateArticleRequestDto articleDto)
     {
-
-        if (_validAuthors.Contains(articleDto.Author))
+        if (!_validAuthors.Contains(articleDto.Author)) throw new ArgumentException("Author is not valid");
+        
+        try
         {
-            try
-            {
-                return _articleRepository.Create(articleDto);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-                throw new Exception("Could not create article");
-            }
+            return _articleRepository.Create(articleDto);
         }
-        throw new ArgumentException("Author is not valid");
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception.Message);
+            throw new Exception("Could not create article");
+        }
     }
     
     public Article Update(int id, UpdateArticleRequestDto articleDto)

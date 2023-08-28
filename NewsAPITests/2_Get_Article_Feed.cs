@@ -3,8 +3,9 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using Tests;
 
-namespace Tests;
+namespace NewsAPITests;
 
 public class GetArticleFeed
 {

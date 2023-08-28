@@ -16,7 +16,7 @@ public class ArticleController : ControllerBase
     }
 
     [HttpGet("articles")]
-    public List<Article> Get()
+    public IEnumerable<Article> Get()
     {
         return _articleService.Get();
     }
@@ -25,6 +25,12 @@ public class ArticleController : ControllerBase
     public Article Get(int id)
     {
         return _articleService.Get(id);
+    }
+    
+    [HttpGet("feed")]
+    public IEnumerable<NewsFeedItem> GetFeed()
+    {
+        return _articleService.GetFeed();
     }
     
     [HttpPost("articles")]

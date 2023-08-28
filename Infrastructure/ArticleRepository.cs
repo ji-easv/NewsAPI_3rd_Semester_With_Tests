@@ -13,7 +13,7 @@ public class ArticleRepository
         _dataSource = dataSource;
     }
 
-    public List<Article> Get()
+    public IEnumerable<Article> Get()
     {
         var sql = @"SELECT * FROM news.articles";
         using var connection = _dataSource.OpenConnection();
@@ -25,6 +25,13 @@ public class ArticleRepository
         var sql = @"SELECT * FROM news.articles WHERE articleid = @articleId";
         using var connection = _dataSource.OpenConnection();
         return connection.QueryFirst<Article>(sql, new {articleId = id});
+    }
+    
+    public IEnumerable<NewsFeedItem> GetFeed()
+    {
+        var sql = @"SELECT articleid, headline, LEFT(body, 50) AS body, articleimgurl FROM news.articles";
+        using var connection = _dataSource.OpenConnection();
+        return connection.Query<NewsFeedItem>(sql);
     }
     
     public Article Create(CreateArticleRequestDto articleDto)
