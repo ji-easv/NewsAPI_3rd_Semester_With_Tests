@@ -26,7 +26,7 @@ jobs:
         run: (sleep 5 && echo "this is after sleeping 5 seconds, printed at $(date)") & echo "this is async, printed at $(date)"
         
       - name: Start API, run tests, kill API
-        run: (cd Api dotnet run --urls http://localhost:5000) & 
+        run: (cd Api dotnet run) & 
              (sleep 20 && cd NewsAPITests && dotnet test) & 
              (sleep 40 && kill -9 $(lsof -t -i:5000))
         env:
