@@ -27,8 +27,8 @@ jobs:
         
       - name: Start API, run tests, kill API
         working-directory: ./NewsAPI
-        env:
-          pgconn: ${{secrets.pgconn}}
         run: (dotnet run --urls http://localhost:5000) & 
              (sleep 20 && cd ../NewsAPITests && dotnet test) & 
              (sleep 40 && kill -9 $(lsof -t -i:5000))
+        env:
+          pgconn: ${{secrets.pgconn}}
