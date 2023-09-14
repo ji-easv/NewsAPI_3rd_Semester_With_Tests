@@ -1,10 +1,12 @@
+using BookfeedAPI;
 using Core.Services;
 using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddNpgsqlDataSource(builder.Configuration.GetConnectionString("DefaultConnection"), 
+
+builder.Services.AddNpgsqlDataSource(Utilities.ProperlyFormattedConnectionString,
     dataSourceBuilder => dataSourceBuilder.EnableParameterLogging());
 builder.Services.AddScoped<ArticleRepository>();
 builder.Services.AddScoped<ArticleService>();
