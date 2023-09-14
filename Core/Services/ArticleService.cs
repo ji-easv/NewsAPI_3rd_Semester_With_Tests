@@ -56,6 +56,8 @@ public class ArticleService
     
     public Article Update(int id, UpdateArticleRequestDto articleDto)
     {
+        if (!_validAuthors.Contains(articleDto.Author)) throw new ArgumentException("Author is not valid");
+
         return _articleRepository.Update(id, articleDto);
     }
     

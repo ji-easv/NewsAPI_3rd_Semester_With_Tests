@@ -22,8 +22,5 @@
         <PackageReference Include="Serilog" Version="3.0.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Include="Tests.csproj" />
-    </ItemGroup>
 
 </Project>
