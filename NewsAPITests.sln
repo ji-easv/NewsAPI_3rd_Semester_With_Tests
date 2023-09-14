@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsAPITests", "NewsAPITests\NewsAPITests.csproj", "{01555871-5310-4508-B5F3-FC9261DE8385}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookfeedAPI", "BookfeedAPI\BookfeedAPI.csproj", "{0423021C-D1A8-4E7A-B402-09D3028B1E9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsAPI", "NewsAPI\NewsAPI.csproj", "{0423021C-D1A8-4E7A-B402-09D3028B1E9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{DEC8C946-E013-467C-B39D-C2E56FDBED79}"
 EndProject
