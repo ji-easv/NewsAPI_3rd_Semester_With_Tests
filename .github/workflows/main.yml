@@ -31,4 +31,4 @@ jobs:
              (sleep 20 && cd ../NewsAPITests && dotnet test) & 
              (sleep 40 && kill -9 $(lsof -t -i:5000))
         env:
-          pgconn: ${{secrets.pgconn}}
+          pgconn: ${{secrets.PGCONN}}
