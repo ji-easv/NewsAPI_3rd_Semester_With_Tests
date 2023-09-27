@@ -28,7 +28,7 @@ public class UpdateArticle
             Headline = "hello world",
             Body = "Mock body",
             Author = "Rob",
-            ArticleImgUrl = "someurl"
+            ArticleImgUrl = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
         };
         var sql = $@" 
             insert into news.articles (headline, body, author, articleimgurl) VALUES (@headline, @body, @author, @articleimgurl);
@@ -69,9 +69,9 @@ public class UpdateArticle
         }
     }
 
-    [TestCase("Mock headline", "Mock body", "Author who doesn't exist", "url", false)]
-    [TestCase("", "Mock body", "Rob", "url", false)]
-    [TestCase("asdlkjsadlksajdlksajdlksajdlksadjldskajasdkl", "Mock body", "Rob", "url", false)]
+    [TestCase("Mock headline", "Mock body", "Author who doesn't exist", "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80", false)]
+    [TestCase("", "Mock body", "Rob", "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80", false)]
+    [TestCase("asdlkjsadlksajdlksajdlksajdlksadjldskajasdkl", "Mock body", "Rob", "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80", false)]
     [TestCase("Mock Headline", "Mock body", "Rob", null, false)]
     public async Task UpdateShouldFailDueToDataValidation(string headline, string body, string author,
         string articleImgUrl, bool testPassing)

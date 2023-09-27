@@ -26,7 +26,7 @@ public class DeleteArticle
             Headline = "hello world",
             Body = "Mock bodu",
             Author = "Rob",
-            ArticleImgUrl = "someurl"
+            ArticleImgUrl = "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
         };
         var sql = $@" 
             insert into news.articles (headline, body, author, articleimgurl) VALUES (@headline, @body, @author, @articleimgurl);
