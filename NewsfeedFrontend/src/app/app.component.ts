@@ -25,7 +25,7 @@ import {ArticleInputComponent} from "./article-input/article-input.component";
                   <div class="text-2xl font-bold text-900">{{ article.headline }}</div>
                   <div class="flex align-items-center gap-3"> {{ article.body }}</div>
                 </div>
-                <div class="flex flex-column align-items-center gap-2">
+                <div class="flex flex  -column align-items-center gap-2">
                   <p-button (onClick)="showArticleDialog(article.articleId)">Show more</p-button>
                   <div class="flex gap-2">
                     <p-button (onClick)="articleService.deleteArticle(article.articleId)">Delete</p-button>
