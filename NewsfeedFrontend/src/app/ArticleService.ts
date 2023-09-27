@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {NewsFeedItem} from "./Interfaces";
+import {Article, NewsFeedItem} from "./Interfaces";
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 
@@ -17,5 +17,12 @@ export class ArticleService {
   async getArticles() {
     const call = this.http.get<NewsFeedItem[]>("http://localhost:5000/api/feed");
     this.articles = await firstValueFrom<NewsFeedItem[]>(call);
+  }
+
+  async getArticle(id: number) {
+    const call = this.http.get<Article>("http://localhost:5000/api/articles/" + id);
+    const article = await firstValueFrom<Article>(call);
+    console.log(article);
+    return article;
   }
 }
