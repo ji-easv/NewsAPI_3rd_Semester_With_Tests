@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Article, CreateArticleRequestDto, NewsFeedItem} from "./Interfaces";
+import {Article, CreateArticleRequestDto, NewsFeedItem, UpdateArticleRequestDto} from "./Interfaces";
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 
@@ -37,15 +37,20 @@ export class ArticleService {
   }
 
   createArticle(article: CreateArticleRequestDto) {
-    const call = this.http.post("http://localhost:5000/api/articles", article);
-    const response = firstValueFrom(call);
+    const call = this.http.post<Article>("http://localhost:5000/api/articles", article);
+    const response = firstValueFrom<Article>(call);
     response.then(r => {
         this.getArticles();
       }
     );
   }
 
-  editArticle(articleId: number) {
-
+  updateArticle(articleId: number, article: UpdateArticleRequestDto) {
+    const call = this.http.put<Article>("http://localhost:5000/api/articles/" + articleId, article);
+    const response = firstValueFrom<Article>(call);
+    response.then(r => {
+        this.getArticles();
+      }
+    );
   }
 }

@@ -2,7 +2,7 @@ using Core.Services;
 using Infrastructure.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookfeedAPI.Controllers;
+namespace NewsAPI.Controllers;
 
 [ApiController]
 [Route("api")]
@@ -56,8 +56,11 @@ public class ArticleController : ControllerBase
     }
     
     [HttpPut("articles/{id}")]
-    public Article Update(int id, [FromBody] UpdateArticleRequestDto articleDto)
+    public Article Update([FromRoute] int id, [FromBody] UpdateArticleRequestDto articleDto)
     {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(articleDto);
+        Console.ResetColor();
         return _articleService.Update(id, articleDto);
     }
     

@@ -1,4 +1,4 @@
-using BookfeedAPI;
+using NewsAPI;
 using Core.Services;
 using Infrastructure;
 
