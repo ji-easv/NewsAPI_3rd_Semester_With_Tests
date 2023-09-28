@@ -15,6 +15,7 @@ public class UpdateArticle
     public void Setup()
     {
         _httpClient = new HttpClient();
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
     }
 
 

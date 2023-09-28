@@ -15,10 +15,9 @@ public class CreateArticle
     public void Setup()
     {
         _httpClient = new HttpClient();
-        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing");
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
     }
-
-
+    
     [Test]
     public async Task ShouldSuccessfullyCreateBook()
     {

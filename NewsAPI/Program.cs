@@ -1,37 +1,25 @@
 using System.Data;
-using System.Data.Common;
 using NewsAPI;
 using Core.Services;
 using Infrastructure;
-using Microsoft.Data.Sqlite;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-if (builder.Environment.IsEnvironment("Testing"))
+builder.Services.AddSingleton<IDbConnection>(container =>
 {
-    // SQLite in-memory database only exists while the connection is open
-    var connection = new SqliteConnection("DataSource=:memory:");
+    var connection = new NpgsqlConnection(Utilities.ProperlyFormattedConnectionString);
     connection.Open();
-    builder.Services.AddSingleton<IDbConnection>(container => connection);
-}
-else
-{
-    builder.Services.AddSingleton<IDbConnection>(container =>
-    {
-        var connection = new NpgsqlConnection(Utilities.ProperlyFormattedConnectionString);
-        connection.Open();
-        return connection;
-    });
-}
+    return connection;
+});
 
 builder.Services.AddScoped<ArticleRepository>();
 builder.Services.AddScoped<ArticleService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSpaStaticFiles(conf => conf.RootPath = "../NewsfeedFrontend/dist/newsfeed-frontend");
 
 var app = builder.Build();
 
@@ -49,6 +37,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
+app.UseSpa(conf => conf.Options.SourcePath = "../NewsfeedFrontend/dist/newsfeed-frontend");
 
 app.MapControllers();
 app.Run();

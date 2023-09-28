@@ -10,7 +10,7 @@ public class FrontendTests : PageTest
     [SetUp]
     public void Setup()
     {
-        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing");
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
     }
     
     [Test]
@@ -33,7 +33,5 @@ public class FrontendTests : PageTest
         await Page.FillAsync("input[formcontrolname=author]", "Rob");
         
         await Page.ClickAsync("text=Create");
-        
-        
     }
 }
