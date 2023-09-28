@@ -43,36 +43,26 @@ export class ArticleInputComponent implements OnInit {
     this.article = this.config.data.article || undefined;
 
     if (this.article) {
-        this.articleForm.controls.headline.setValue(this.article?.headline);
-        this.articleForm.controls.body.setValue(this.article?.body);
-        this.articleForm.controls.articleImgUrl.setValue(this.article?.articleImgUrl);
-        this.articleForm.controls.author.setValue(this.article?.author);
-      }
+      this.articleForm.controls.headline.setValue(this.article?.headline);
+      this.articleForm.controls.body.setValue(this.article?.body);
+      this.articleForm.controls.articleImgUrl.setValue(this.article?.articleImgUrl);
+      this.articleForm.controls.author.setValue(this.article?.author);
     }
+  }
 
-  saveArticle() {
+  async saveArticle() {
     if (this.articleForm.valid) {
-      if (this.articleId) {
-        try {
-          this.articleService.updateArticle(this.articleId, this.articleForm.getRawValue() as UpdateArticleRequestDto)
-            .then(r => console.log(r));
-          this.dialogRef.close();
-        } catch (e) {
-          if (e instanceof HttpErrorResponse) {
-            console.log(e);
-          }
+      try {
+        if (this.articleId) {
+          await this.articleService.updateArticle(this.articleId, this.articleForm.getRawValue() as UpdateArticleRequestDto)
+        } else {
+          await this.articleService.createArticle(this.articleForm.getRawValue() as CreateArticleRequestDto);
         }
-      } else {
-        try {
-          this.articleService.createArticle(this.articleForm.getRawValue() as CreateArticleRequestDto)
-            .then(r => {
-              console.log(r);
-              this.dialogRef.close();
-            });
-        } catch (e) {
-          if (e instanceof HttpErrorResponse) {
-            console.log(e);
-          }
+
+        this.dialogRef.close();
+      } catch (e) {
+        if (e instanceof HttpErrorResponse) {
+          console.log(e);
         }
       }
     }

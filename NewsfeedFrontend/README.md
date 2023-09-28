@@ -6,4 +6,4 @@ ng build --base-href=/app
 ```bash
 cd .\dist\newsfeed-frontend\
 http-server .
-``
+```
