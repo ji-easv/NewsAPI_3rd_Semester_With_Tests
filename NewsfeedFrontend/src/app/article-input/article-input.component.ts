@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Article} from "../Interfaces";
+import {Article, CreateArticleRequestDto, UpdateArticleRequestDto} from "../Interfaces";
 import {ArticleService} from "../ArticleService";
-import {DynamicDialogConfig} from "primeng/dynamicdialog";
+import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-article-input',
@@ -34,7 +35,7 @@ export class ArticleInputComponent implements OnInit {
     author: new FormControl('', [Validators.required, Validators.pattern('(?:Bob|Rob|Dob|Lob)')])
   });
 
-  constructor(public articleService: ArticleService, public config: DynamicDialogConfig) {
+  constructor(public articleService: ArticleService, public config: DynamicDialogConfig, private dialogRef: DynamicDialogRef) {
   }
 
   ngOnInit() {
@@ -52,19 +53,27 @@ export class ArticleInputComponent implements OnInit {
   saveArticle() {
     if (this.articleForm.valid) {
       if (this.articleId) {
-        this.articleService.updateArticle(this.articleId, {
-          headline: this.articleForm.controls.headline.value,
-          body: this.articleForm.controls.body.value,
-          articleImgUrl: this.articleForm.controls.articleImgUrl.value,
-          author: this.articleForm.controls.author.value
-        });
+        try {
+          this.articleService.updateArticle(this.articleId, this.articleForm.getRawValue() as UpdateArticleRequestDto)
+            .then(r => console.log(r));
+          this.dialogRef.close();
+        } catch (e) {
+          if (e instanceof HttpErrorResponse) {
+            console.log(e);
+          }
+        }
       } else {
-        this.articleService.createArticle({
-          headline: this.articleForm.controls.headline.value,
-          body: this.articleForm.controls.body.value,
-          articleImgUrl: this.articleForm.controls.articleImgUrl.value,
-          author: this.articleForm.controls.author.value
-        });
+        try {
+          this.articleService.createArticle(this.articleForm.getRawValue() as CreateArticleRequestDto)
+            .then(r => {
+              console.log(r);
+              this.dialogRef.close();
+            });
+        } catch (e) {
+          if (e instanceof HttpErrorResponse) {
+            console.log(e);
+          }
+        }
       }
     }
   }

@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Article, CreateArticleRequestDto, NewsFeedItem, UpdateArticleRequestDto} from "./Interfaces";
 import {HttpClient} from "@angular/common/http";
-import {firstValueFrom} from "rxjs";
+import {firstValueFrom, Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 
 @Injectable({
@@ -22,33 +22,35 @@ export class ArticleService {
   }
 
   async getArticle(id: number) {
-    const call = this.http.get<Article>(environment.baseUrl + "/api/feed" + id);
+    const call = this.http.get<Article>(environment.baseUrl + "/api/articles/" + id);
     const article = await firstValueFrom<Article>(call);
     console.log(article);
     return article;
   }
 
+  createArticle(article: CreateArticleRequestDto) : Promise<Article> {
+    const call = this.http.post<Article>(environment.baseUrl + "/api/articles/", article);
+    const response = firstValueFrom<Article>(call);
+    response.then(r => {
+        this.getArticles();
+      }
+    );
+    return response;
+  }
+
+  updateArticle(articleId: number, article: UpdateArticleRequestDto) : Promise<Article> {
+    const call = this.http.put<Article>(environment.baseUrl + "/api/articles/" + articleId, article);
+    const response = firstValueFrom<Article>(call);
+    response.then(r => {
+        this.getArticles();
+      }
+    );
+    return response;
+  }
+
   deleteArticle(articleId: number) {
-    const call = this.http.delete(environment.baseUrl + "/api/feed" + articleId);
+    const call = this.http.delete(environment.baseUrl + "/api/articles/" + articleId);
     const response = firstValueFrom(call);
-    response.then(r => {
-        this.getArticles();
-      }
-    );
-  }
-
-  createArticle(article: CreateArticleRequestDto) {
-    const call = this.http.post<Article>(environment.baseUrl + "/api/feed", article);
-    const response = firstValueFrom<Article>(call);
-    response.then(r => {
-        this.getArticles();
-      }
-    );
-  }
-
-  updateArticle(articleId: number, article: UpdateArticleRequestDto) {
-    const call = this.http.put<Article>(environment.baseUrl + "/api/feed" + articleId, article);
-    const response = firstValueFrom<Article>(call);
     response.then(r => {
         this.getArticles();
       }

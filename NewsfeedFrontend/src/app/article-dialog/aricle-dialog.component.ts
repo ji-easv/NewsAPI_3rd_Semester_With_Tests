@@ -15,7 +15,6 @@ export class ArticleDialogComponent implements OnDestroy {
   constructor(private dialogService: DialogService, private articleService : ArticleService) {
     //TODO: figure out how to call this from the parent component
 
-
   }
 
   ngOnDestroy(): void {

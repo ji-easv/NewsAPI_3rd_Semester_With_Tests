@@ -32,3 +32,9 @@ export interface UpdateArticleRequestDto {
   articleImgUrl: string | null;
   author: string | null;
 }
+
+export class ResponseDto<T> {
+  data?: T;
+  message?: string;
+  success?: boolean;
+}
